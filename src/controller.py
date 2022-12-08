@@ -1,108 +1,72 @@
 import pygame
-import time
-import sys
+import pygame_menu
+from src.sprite import Sprite
+pygame.init()
+SCREEN = pygame.display.set_mode()
+WIDTH, HEIGHT = pygame.display.get_window_size()
+FPS = 60
+FONT = pygame_menu.font.FONT_8BIT	
+BACKGROUND = pygame.transform.scale(pygame.image.load('./assets/constants/Backgroundpy.png'),(WIDTH,HEIGHT))
+FLOOR = pygame.transform.scale(pygame.image.load('./assets/constants/Groundfloor.png'),(WIDTH,100))
+CLOCK = pygame.time.Clock()
 
-from pygame.locals import (
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
-    K_ESCAPE,
-    KEYDOWN,
-    QUIT,
-    MOUSEBUTTONDOWN,
-)
-import image_test from image_test
-
-
-class Controller:
+class controller:
   def __init__(self):
-    pygame.init()
-    width = 600
-    height = 400
+      self.menu = pygame_menu.Menu("Jumpy Crab", WIDTH, HEIGHT, position=(10,10),theme=pygame_menu.themes.THEME_BLUE)
+      # Create a font object with the FONT_8BIT font and size
+      self.menu.add.label('Welcome', font_name = FONT)
+      self.menu.add.button("Press to Begin", self.game_stage1, font_name = FONT)
+      pygame.display.update()
+      self.menu.mainloop(SCREEN)
 
-    size = [width,height]
-    self.screen = pygame.display.set_mode(size)
-    self.background_images = ("../assets/Press_start.png")
-    self.background = pygame.image.load(self.background_images)
-    self.background = pygame.transform.scale(self.background, size)
+  def quit_menu(self):
+      self.menu = pygame_menu.Menu("Death by crab", WIDTH, HEIGHT, position=(10,10), theme=pygame_menu.themes.THEME_ORANGE)
+      self.menu.add.label('You died but its ok crabs are difficult', font_name = FONT, font_size = 22)
+      self.menu.add.button("Play Again", self.game_stage1, font_name = FONT)
+      self.menu.add.label('Or', font_name = FONT)
+      self.menu.add.button("Quit", self.quit_game, font_name = FONT)
+      pygame.display.update()
+      self.menu.mainloop(SCREEN)
 
+  def quit_game(self):
+    exit() 
   
   def mainloop(self):
-  
-    
-    pygame.mouse.set_visible(1)
-    button1 = pygame.draw.rect(self.screen, 'blue', (75, 200, 100, 40))
-    button2 = pygame.draw.rect(self.screen, 'red', (425, 200, 100, 40))
-    pygame.display.flip()
+    running = True
+    while running:
+      events = pygame.event.get()
+      for event in events:
+        if event.type == pygame.QUIT:
+          exit()
+             
 
+  def game_stage1(self):
+    sprite = Sprite()
+    pos = -6.5
     while True:
-      bg.blit(bg,(0,0))
+      CLOCK.tick(FPS)
       for event in pygame.event.get():
-          if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                ## if mouse is pressed get position of cursor ##
-                  pos = pygame.mouse.get_pos()
-                ## check if cursor is on button ##
-                  if button1.collidepoint(pos):
-                    print("You pressed blue button")
-                    blueButton()
-                    pygame.time.wait(7000)
-                  elif button2.collidepoint(pos):
-                    print("You pressed red button")
-                    redButton()
-          
-  def blueButton():
-    screen.fill('blue')  #this is start button, change this to level select
-    lvl1 = pygame.draw.rect(self.screen, 'blue', (75, 200, 100, 40))
-    lvl2 = pygame.draw.rect(self.screen, 'red', (425, 200, 100, 40))
-    pygame.display.flip()
+        if event.type == pygame.QUIT:
+          exit()
+          pygame.display.update()
+        elif event.type == pygame.KEYUP:
+            pos = -6.5
+        if event.type == pygame.KEYDOWN:
+          if event.key == pygame.K_SPACE:
+            sprite.is_jumping = True
+            pos = -6.5
 
-    while True:
-      bg.blit(bg,(0,0))
-      for event in pygame.event.get():
-          if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                ## if mouse is pressed get position of cursor ##
-                  pos = pygame.mouse.get_pos()
-                ## check if cursor is on button ##
-                  if lvl1.collidepoint(pos):
-                    print("You pressed blue button")
-                    lvl1()
-                    pygame.time.wait(7000)
-                  elif lvl2.collidepoint(pos):
-                    print("You pressed red button")
-                    lvl2()
-    quit()
-
-  def redButton():
-    screen.fill('red')   #this will be the ingame quit button, clicking this will close out the aplication
-    pygame.display.flip()
-    time.wait(9)
-    pygame.display.quit()
-    pygame.quit()
-    exit()
+      
+      sprite.draw()
+      sprite.walking(pos)
+      sprite.jumping()
+      sprite.collision()
+      if sprite.game_over:
+        self.quit_menu()
+      pygame.display.update()
+      SCREEN.blit(BACKGROUND, BACKGROUND.get_rect())
+      SCREEN.blit(FLOOR, (0,330))
 
 
- 
-
-def lvl1():
-  #screen.fill("green")
-  Background()
-  Floor()
-  pygame.display.flip()
-  Player()
-  Endflag()
-    while True:
-      if player.pos() >= (.100):
-        lvl2()
-  #Clouds()
-  #Enemy() # I would have to find a way to be able to place down and have them move too 
-  Player()
+      
   
-  def quit():
-    pygame.time.wait(1000)
-    main()
-  main()
-
-    pygame.display.flip()
-
-Controller()
