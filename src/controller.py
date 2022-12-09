@@ -21,9 +21,9 @@ class controller:
       self.menu = pygame_menu.Menu("Jumpy Crab", WIDTH, HEIGHT, position=(10,10),theme=pygame_menu.themes.THEME_BLUE)
       self.menu.add.label('Welcome', font_name = FONT)
       self.menu.add.button("Set your difficulty", font_name = FONT)
-      self.menu.add.button("Easy", self.game_stage1, 0.54, font_name = FONT)
-      self.menu.add.button("Medium", self.game_stage1, 0.38, font_name = FONT)
-      self.menu.add.button("Hard", self.game_stage1, 0.22, font_name = FONT)
+      self.menu.add.button("Easy", self.game_stage1, 0.54, 10, font_name = FONT)
+      self.menu.add.button("Medium", self.game_stage1, 0.38, 8, font_name = FONT)
+      self.menu.add.button("Hard", self.game_stage1, 0.22, 6, font_name = FONT)
       self.high_score = 0
       pygame.display.update()
       self.menu.mainloop(SCREEN)
@@ -55,10 +55,11 @@ class controller:
           exit()
              
 
-  def game_stage1(self, x):
+  def game_stage1(self, x, y):
     sprite = Sprite()
     pos = -6.5
     gravity = x
+    grav2 = y
     while True:
       CLOCK.tick(FPS)
       for event in pygame.event.get():
@@ -67,7 +68,7 @@ class controller:
           pygame.display.update()
         elif event.type == pygame.KEYDOWN:
           if event.key == pygame.K_SPACE:
-            pos = -8
+            pos = -1 * grav2
             sprite.is_jumping = True
 
       sprite.count()

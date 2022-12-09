@@ -3,15 +3,15 @@
     "src/sprite.py": [
       {
         "id": "c584ae77-49f1-453a-b825-d4984fcfbcfc",
-        "line": 56,
-        "version": 5016,
-        "index": 2706
+        "line": 1,
+        "version": 5018,
+        "index": 0
       },
       {
         "id": "824b1520-0db2-49cd-9ce8-8edf038d6b2c",
-        "line": 57,
-        "version": 5016,
-        "index": 2819
+        "line": 1,
+        "version": 5018,
+        "index": 0
       }
     ]
   }
